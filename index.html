@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminal Teacher — learn the terminal with Byte!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== HUD (top bar, shown after OS is picked) ===== -->
+  <header id="hud" hidden>
+    <button id="hud-home" class="hud-logo" title="Back to lesson map">
+      <span class="logo-mini">▮▶</span> TERMINAL TEACHER
+    </button>
+    <div class="hud-stats">
+      <button id="hud-sound" class="hud-chip" title="Sound on/off">🔊</button>
+      <button id="hud-os" class="hud-chip" title="Change operating system">🖥️ <span id="hud-os-name">?</span></button>
+      <span class="hud-chip xp">⭐ <span id="hud-xp">0</span> XP</span>
+      <span class="hud-chip streak">🔥 <span id="hud-streak">0</span></span>
+    </div>
+  </header>
+
+  <main id="app">
+
+    <!-- ===== TITLE SCREEN ===== -->
+    <section id="screen-title" class="screen">
+      <div class="title-wrap">
+        <h1 class="game-logo">
+          <span class="logo-line1">TERMINAL</span>
+          <span class="logo-line2">TEACHER</span>
+        </h1>
+        <p class="tagline">Learn real computer magic, one day at a time! ✨</p>
+        <img class="title-mascot" src="assets/mascot/greeting.png" alt="Byte the raccoon waving hello">
+        <button id="btn-start" class="pixel-btn big primary">▶ START</button>
+        <p class="title-footnote">A safe practice terminal — nothing on this computer can break. Promise! 🦝</p>
+      </div>
+    </section>
+
+    <!-- ===== OS PICKER ===== -->
+    <section id="screen-os" class="screen" hidden>
+      <h2 class="screen-title">Pick your machine!</h2>
+      <p id="os-detect-msg" class="screen-sub">Byte is sniffing your computer…</p>
+      <div class="os-grid">
+        <button class="os-card" data-os="linux">
+          <span class="os-icon" aria-hidden="true">
+            <!-- Tux the penguin -->
+            <svg viewBox="0 0 100 122">
+              <path fill="#111111" d="M50 6 C32 6 26 24 27 44 C27 52 24 58 20 66 C15 76 12 86 13 96 C14 110 28 118 50 118 C72 118 86 110 87 96 C88 86 85 76 80 66 C76 58 73 52 73 44 C74 24 68 6 50 6 Z"/>
+              <path fill="#ffffff" d="M50 52 C36 52 28 68 28 86 C28 102 38 112 50 112 C62 112 72 102 72 86 C72 68 64 52 50 52 Z"/>
+              <ellipse fill="#ffffff" cx="41" cy="30" rx="7.5" ry="10"/>
+              <ellipse fill="#ffffff" cx="59" cy="30" rx="7.5" ry="10"/>
+              <ellipse fill="#111111" cx="43.5" cy="32" rx="3" ry="4.5"/>
+              <ellipse fill="#111111" cx="56.5" cy="32" rx="3" ry="4.5"/>
+              <path fill="#f28c00" d="M35 42 C38 36 62 36 65 42 C62 50 54 54 50 54 C46 54 38 50 35 42 Z"/>
+              <path fill="#111111" d="M40 44 C46 47 54 47 60 44 C54 49 46 49 40 44 Z" opacity=".35"/>
+              <path fill="#fdb713" stroke="#111111" stroke-width="3" stroke-linejoin="round" d="M30 96 C18 94 8 100 8 108 C8 114 16 117 26 116 C36 115 42 110 40 103 C39 99 35 97 30 96 Z"/>
+              <path fill="#fdb713" stroke="#111111" stroke-width="3" stroke-linejoin="round" d="M70 96 C82 94 92 100 92 108 C92 114 84 117 74 116 C64 115 58 110 60 103 C61 99 65 97 70 96 Z"/>
+            </svg>
+          </span>
+          <span class="os-name">Linux</span>
+          <span class="os-desc">Penguin power! Used on Chromebooks &amp; servers.</span>
+          <span class="os-flag" hidden>YOUR COMPUTER</span>
+        </button>
+        <button class="os-card" data-os="macos">
+          <span class="os-icon" aria-hidden="true">
+            <img class="os-logo" src="assets/logos/os-apple.png" alt="">
+          </span>
+          <span class="os-name">macOS</span>
+          <span class="os-desc">Apple computers, like MacBooks &amp; iMacs.</span>
+          <span class="os-flag" hidden>YOUR COMPUTER</span>
+        </button>
+        <button class="os-card" data-os="windows">
+          <span class="os-icon" aria-hidden="true">
+            <img class="os-logo" src="assets/logos/os-windows.png" alt="">
+          </span>
+          <span class="os-name">Windows</span>
+          <span class="os-desc">The one with the Start button!</span>
+          <span class="os-flag" hidden>YOUR COMPUTER</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== LEVEL PICKER ===== -->
+    <section id="screen-level" class="screen" hidden>
+      <h2 class="screen-title">Pick your level!</h2>
+      <p class="screen-sub">One little lesson a day keeps the mouse away! 🖱️❌</p>
+      <div class="os-grid">
+        <button class="os-card" data-tier="beginner">
+          <span class="os-icon level-emoji" aria-hidden="true">🌱</span>
+          <span class="os-name">Beginner</span>
+          <span class="os-desc">First steps — the magic words every explorer needs.</span>
+          <span class="os-flag level-progress" hidden></span>
+        </button>
+        <button class="os-card" data-tier="intermediate">
+          <span class="os-icon level-emoji" aria-hidden="true">⛏️</span>
+          <span class="os-name">Intermediate</span>
+          <span class="os-desc">Everyday quests — ending with a real Minecraft server!</span>
+          <span class="os-flag level-progress" hidden></span>
+        </button>
+        <button class="os-card locked" data-tier="pro" disabled>
+          <span class="os-icon level-emoji" aria-hidden="true">🧙</span>
+          <span class="os-name">Pro</span>
+          <span class="os-desc">Power tools, pipes, and wizard-level tricks.</span>
+          <span class="os-flag">COMING SOON</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== LESSON MAP ===== -->
+    <section id="screen-map" class="screen" hidden>
+      <div class="map-toolbar">
+        <button id="btn-map-levels" class="pixel-btn tiny">◀ Levels</button>
+      </div>
+      <h2 class="screen-title" id="map-title">Quest Map</h2>
+      <p class="screen-sub" id="map-sub"></p>
+      <div id="lesson-path"></div>
+    </section>
+
+    <!-- ===== LESSON ===== -->
+    <section id="screen-lesson" class="screen wide" hidden>
+      <div class="desktop-area">
+        <aside id="lesson-panel" class="pixel-window">
+          <div class="window-bar">
+            <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
+            <span id="lesson-title" class="window-title"></span>
+            <button id="btn-quit-lesson" class="pixel-btn tiny">✕ Map</button>
+          </div>
+          <div class="window-body">
+            <div id="step-dots" class="step-dots"></div>
+            <div id="step-card" class="step-card"></div>
+            <div id="step-actions"></div>
+          </div>
+        </aside>
+        <div id="term-mount"></div>
+      </div>
+    </section>
+
+    <!-- ===== FUN ZONE ===== -->
+    <section id="screen-fun" class="screen wide" hidden>
+      <div class="desktop-area">
+        <aside id="fun-panel" class="pixel-window">
+          <div class="window-bar">
+            <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
+            <span class="window-title">✨ Fun Zone</span>
+            <button id="btn-quit-fun" class="pixel-btn tiny">✕ Map</button>
+          </div>
+          <div class="window-body">
+          <p class="fun-intro">This is a free-play terminal. Try the secret toys!</p>
+          <div class="fun-cards">
+            <button class="fun-card" data-cmd="cmatrix"><code>cmatrix</code><span>Enter the Matrix 🟩</span></button>
+            <button class="fun-card" data-cmd="sl"><code>sl</code><span>Choo choo! 🚂</span></button>
+            <button class="fun-card" data-cmd="cowsay Hi class!"><code>cowsay</code><span>A talking cow 🐮</span></button>
+            <button class="fun-card" data-cmd="fortune"><code>fortune</code><span>A surprise message 🥠</span></button>
+            <button class="fun-card" data-cmd="tree"><code>tree</code><span>See ALL the folders 🌳</span></button>
+            <button class="fun-card" data-cmd="help"><code>help</code><span>List every command 📖</span></button>
+          </div>
+          </div>
+        </aside>
+        <div id="fun-term-mount"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== TASKBAR (retro desktop, lesson + fun zone) ===== -->
+  <div id="taskbar" hidden>
+    <button id="task-start" class="task-start">🦝 MAP</button>
+    <div id="task-windows"></div>
+    <span id="task-clock">00:00</span>
+  </div>
+
+  <!-- ===== MASCOT (always bottom-right) ===== -->
+  <div id="mascot" hidden>
+    <div id="mascot-bubble" class="bubble" hidden></div>
+    <img id="mascot-img" src="assets/mascot/neutral.png" alt="Byte the raccoon">
+  </div>
+
+  <!-- ===== CELEBRATION OVERLAY ===== -->
+  <div id="overlay" hidden>
+    <div id="confetti-layer"></div>
+    <div class="overlay-card">
+      <img id="overlay-mascot" src="assets/mascot/great-job.png" alt="Byte celebrating">
+      <h2 id="overlay-title">LESSON COMPLETE!</h2>
+      <p id="overlay-msg"></p>
+      <div class="overlay-actions">
+        <button id="btn-overlay-map" class="pixel-btn">🗺 Map</button>
+        <button id="btn-overlay-next" class="pixel-btn primary">Next lesson ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

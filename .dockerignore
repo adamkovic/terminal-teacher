@@ -1,0 +1,9 @@
+# only index.html, css/, js/, assets/ end up in the image
+.git
+.claude
+mascot
+tools
+scratchpad
+*.md
+serve.py
+.DS_Store
