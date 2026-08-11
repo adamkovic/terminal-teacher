@@ -613,15 +613,18 @@ button.hud-chip:hover { background: var(--teal); color: #fff; }
 .fun-card span { display: block; font-size: 20px; color: var(--ink-dim); }
 
 /* ---------- celebration overlay ---------- */
-#overlay {
+#overlay, #ask-overlay {
   position: fixed;
   inset: 0;
-  z-index: 99999;             /* celebration modal beats even Clippy-mode Byte */
+  z-index: 99999;             /* modals beat even Clippy-mode Byte */
   background: rgba(10, 10, 20, .82);
   display: flex;
   align-items: center;
   justify-content: center;
 }
+#ask-mascot { height: 160px; }
+#ask-msg { font-size: 24px; line-height: 1.2; margin: 12px 0 20px; }
+.ask-card { max-width: 420px; }
 .overlay-card {
   background: var(--bg-2);
   border: 5px solid #000;

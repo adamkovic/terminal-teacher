@@ -97,6 +97,7 @@ export class Terminal {
   constructor(os, mountEl, opts = {}) {
     this.os = os;
     this.meta = OS_META[os];
+    this.opts = opts;
     this.fs = opts.fs || makeFS(os);
     this.cwd = [...this.meta.home];
     this.history = [];
@@ -144,6 +145,15 @@ export class Terminal {
 
     this.body.addEventListener('click', () => { if (!this.busy) this.input.focus(); });
     this.input.addEventListener('keydown', (e) => this.onKey(e));
+
+    // typing practice: pasting stays blocked until the app unlocks it
+    const guardPaste = (e) => {
+      if (this.opts.allowPaste && this.opts.allowPaste()) return;
+      e.preventDefault();
+      if (this.opts.onPasteBlocked) this.opts.onPasteBlocked();
+    };
+    this.input.addEventListener('paste', guardPaste);
+    this.input.addEventListener('drop', guardPaste);
   }
 
   onKey(e) {

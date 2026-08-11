@@ -168,6 +168,60 @@ function renderMap() {
   }
 }
 
+// ---------- typing practice: paste stays locked until Byte unlocks it ----------
+
+const PASTE_KEY = 'terminal-teacher-paste-unlocked';
+const paste = {
+  attempts: 0,
+  unlocked: (() => { try { return localStorage.getItem(PASTE_KEY) === '1'; } catch { return false; } })(),
+};
+
+const PASTE_NAGS = [
+  `Whoa there — no pasting! 🖐 Real terminals let you paste, but typing it yourself is how the magic sticks.`,
+  `I saw that! 🦝 Your fingers learn the command, not your clipboard. Type it out!`,
+  `Nice try! 😄 In here we type. Slow is smooth, and smooth is fast.`,
+  `Still no pasting! Every keystroke is a tiny workout for your terminal muscles. 💪`,
+];
+
+function onPasteBlocked() {
+  paste.attempts++;
+  sound.play('error');
+  if (paste.attempts >= 5) {
+    askYesNo(
+      'thinking',
+      `It looks like you REALLY want to paste your commands. Real terminals allow it... want me to unlock pasting?`,
+      'Yes, unlock it', `No, I'll type!`,
+      () => {   // yes
+        paste.unlocked = true;
+        try { localStorage.setItem(PASTE_KEY, '1'); } catch { /* ok */ }
+        mascot.say('laughing', `Pasting unlocked! Use it wisely — and keep those fingers nimble. 😉`);
+      },
+      () => {   // no
+        paste.attempts = 0;
+        mascot.say('great-job', `THAT'S the spirit! Typing it out is the way of the terminal master. 🥋`);
+      });
+    return;
+  }
+  mascot.say(['inspecting', 'laughing', 'its-ok'][paste.attempts % 3],
+    PASTE_NAGS[(paste.attempts - 1) % PASTE_NAGS.length], { ms: 6000 });
+}
+
+const pasteHooks = {
+  allowPaste: () => paste.unlocked,
+  onPasteBlocked,
+};
+
+// small yes/no dialog fronted by Byte
+function askYesNo(pose, msg, yesLabel, noLabel, onYes, onNo) {
+  $('#ask-mascot').src = `assets/mascot/${pose}.png`;
+  $('#ask-msg').innerHTML = mascot.format(msg);
+  $('#btn-ask-yes').textContent = yesLabel;
+  $('#btn-ask-no').textContent = noLabel;
+  $('#btn-ask-yes').onclick = () => { $('#ask-overlay').hidden = true; onYes(); };
+  $('#btn-ask-no').onclick = () => { $('#ask-overlay').hidden = true; onNo(); };
+  $('#ask-overlay').hidden = false;
+}
+
 // ---------- lesson engine ----------
 
 function startLesson(lesson) {
@@ -177,6 +231,7 @@ function startLesson(lesson) {
   app.term = new Terminal(app.os, $('#term-mount'), {
     fs: app.fs,
     onCommand: onLessonCommand,
+    ...pasteHooks,
   });
   app.term.onEggDone = null;
   if (lesson.setup) lesson.setup(app.term);   // re-seed files the lesson needs
@@ -324,7 +379,7 @@ function confetti() {
 // ---------- fun zone ----------
 
 function openFunZone() {
-  app.funTerm = new Terminal(app.os, $('#fun-term-mount'), { fs: app.fs });
+  app.funTerm = new Terminal(app.os, $('#fun-term-mount'), { fs: app.fs, ...pasteHooks });
   show('fun');                                 // visible first, so the area has a size
   const area = $('#screen-fun .desktop-area');
   const funTermEl = $('#fun-term-mount .terminal');
