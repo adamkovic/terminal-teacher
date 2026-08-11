@@ -1,0 +1,25 @@
+# Terminal Teacher — Unraid-friendly compose stack
+#
+# The app is 100% static: no database, no server-side state (student
+# progress lives in each browser's localStorage), so no appdata volume
+# is needed. Change the left side of the port mapping if 8082 is taken.
+#
+# Open at:  http://<server-ip>:8082
+
+services:
+  terminal-teacher:
+    image: ghcr.io/adamkovic/terminal-teacher:latest
+    container_name: terminal-teacher
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+    labels:
+      # nice WebUI link + icon in Unraid's Docker tab
+      net.unraid.docker.webui: "http://[IP]:[PORT:8082]"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/adamkovic/terminal-teacher/main/assets/mascot/neutral.png"
+
+    # OPTIONAL: serve a locally-modified copy instead of the baked-in app.
+    # Copy index.html, css/, js/, assets/ into
+    # /mnt/user/appdata/terminal-teacher/site first, then uncomment:
+    # volumes:
+    #   - /mnt/user/appdata/terminal-teacher/site:/usr/share/nginx/html:ro
