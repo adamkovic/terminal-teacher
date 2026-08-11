@@ -652,3 +652,83 @@ button.hud-chip:hover { background: var(--teal); color: #fff; }
 @keyframes fall {
   to { transform: translateY(110vh) rotate(720deg); }
 }
+
+/* ============================================================
+   PHONE PASS — compact scale for small screens
+   ============================================================ */
+@media (max-width: 640px) {
+
+  /* pocket-sized Byte: helpful, not in the way */
+  #mascot { right: 8px; bottom: 8px; }
+  #mascot-img { height: 106px; }
+  .bubble {
+    max-width: 215px;
+    font-size: 19px;
+    padding: 8px 10px;
+    margin-right: 16px;
+    margin-bottom: 6px;
+  }
+
+  /* compact HUD */
+  #hud { padding: 6px 10px; gap: 6px; }
+  .hud-logo { font-size: 9px; }
+  .hud-stats { gap: 5px; }
+  .hud-chip { font-size: 8px; padding: 5px 6px; border-width: 2px; }
+
+  /* screens & typography */
+  .screen { padding: 18px 12px 150px; }
+  .screen-title { font-size: 17px; }
+  .screen-sub { font-size: 20px; margin-bottom: 18px; }
+
+  /* title screen */
+  .logo-line1, .logo-line2 { font-size: 28px; }
+  .tagline { font-size: 21px; }
+  .title-mascot { height: 160px; }
+  .pixel-btn.big { font-size: 14px; padding: 15px 30px; }
+
+  /* OS + level cards */
+  .os-grid { gap: 14px; margin-top: 16px; }
+  .os-card {
+    grid-template-columns: 54px 1fr;
+    column-gap: 14px;
+    padding: 14px 14px;
+    box-shadow: 0 5px 0 #000;
+  }
+  .os-icon svg, .os-icon .os-logo { height: 46px; }
+  .level-emoji { font-size: 38px; line-height: 46px; }
+  .os-name { font-size: 12px; margin-bottom: 5px; }
+  .os-desc { font-size: 19px; }
+  .os-flag { font-size: 7px; padding: 4px 6px; }
+
+  /* quest map */
+  .map-node { padding: 10px 12px; gap: 10px; }
+  .node-badge { min-width: 42px; height: 42px; font-size: 13px; }
+  .node-title { font-size: 10px; margin-bottom: 4px; }
+  .node-desc { font-size: 18px; }
+  .node-xp { font-size: 8px; }
+
+  /* lesson: tighter mission window, terminal that fits above the keyboard */
+  .window-body { padding: 10px 12px; }
+  .window-title { font-size: 10px; }
+  .step-card { font-size: 20px; padding: 10px 12px; min-height: 0; }
+  .step-dots { margin-bottom: 10px; }
+  .terminal { min-height: 0; }
+  .term-body, .wm-window .term-body {
+    font-size: 19px;
+    max-height: 46vh;      /* leaves room for the on-screen keyboard */
+    min-height: 180px;
+  }
+  .term-input { font-size: 19px; }   /* stays ≥16px so iOS won't zoom-jump */
+  .term-titlebar { font-size: 15px; }
+  .term-statusbar { font-size: 14px; padding: 4px 10px; }
+
+  /* fun zone */
+  .fun-cards { grid-template-columns: 1fr; }
+  .fun-intro { font-size: 20px; }
+
+  /* celebration */
+  .overlay-card { padding: 20px 22px; max-width: 92vw; }
+  #overlay-mascot { height: 150px; }
+  #overlay-title { font-size: 14px; }
+  #overlay-msg { font-size: 21px; }
+}
