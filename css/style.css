@@ -707,7 +707,18 @@ button.hud-chip:hover { background: var(--teal); color: #fff; }
   .node-desc { font-size: 18px; }
   .node-xp { font-size: 8px; }
 
-  /* lesson: tighter mission window, terminal that fits above the keyboard */
+  /* lesson: the mission window pins under the HUD so instructions stay
+     on screen while the keyboard + terminal have the rest */
+  #screen-lesson #lesson-panel {
+    position: sticky !important;   /* outranks the stacked-mode static reset */
+    top: 50px;
+    z-index: 60;
+    box-shadow: 0 5px 0 #000, 0 12px 26px rgba(0, 0, 0, .6);
+  }
+  #lesson-panel .window-body {
+    max-height: 32vh;      /* long explanations scroll inside the pinned window */
+    overflow-y: auto;
+  }
   .window-body { padding: 10px 12px; }
   .window-title { font-size: 10px; }
   .step-card { font-size: 20px; padding: 10px 12px; min-height: 0; }
